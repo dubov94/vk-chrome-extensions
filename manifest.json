@@ -1,0 +1,21 @@
+{
+	"manifest_version": 2,
+	"name": "VK Extensions",
+	"version": "0.1",
+	"permissions": [
+		"storage"
+	],
+	"browser_action": {
+		"default_icon": "logo.png",
+		"default_popup": "main.html"
+	},
+	"content_scripts" : [ {
+        "js" : [ "away_gate_remover.js" ],
+        "matches" : ["*://vk.com/*"],
+        "run_at" : "document_start"
+    }, {
+        "js" : [ "age.js", "audio_downloader.js", "mathjax.js"],
+        "matches" : ["*://vk.com/*"],
+        "run_at" : "document_end"
+    } ]
+}
