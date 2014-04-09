@@ -11,11 +11,16 @@
 	},
 	"content_scripts" : [ {
         "js" : [ "away_gate_remover.js" ],
-        "matches" : ["*://vk.com/*"],
+        "matches" : ["*://vk.com/away*"],
         "run_at" : "document_start"
     }, {
         "js" : [ "age.js", "audio_downloader.js", "mathjax.js"],
         "matches" : ["*://vk.com/*"],
+        "exclude_matches" : ["*://vk.com/away*"],
         "run_at" : "document_end"
-    } ]
+    } ],
+    "background": {
+    	"scripts": ["background.js"],
+    	"persistent": false
+    }
 }

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				chrome.tabs.create({active: true, url: address});
 			}
 		}
-		)(list[i].parentNode.children[1].value);
+		)(list[i].href);
 	}
 });
 
@@ -44,9 +44,9 @@ function checkbox(el, v) {
   el = ge(el);
   if (!el || hasClass(el, 'disabled')) return;
 
-  if (v === undefined) {
+  /*if (v === undefined) {
     v = !isChecked(el);
-  }
+  }*/
   toggleClass(el, 'on', v);
   return false;
 } 
@@ -57,12 +57,23 @@ document.addEventListener("DOMContentLoaded", function() {
 	for(var i = 0; i < list.length; ++i) {
 		list[i].onclick = (function(obj) {
 			return function(event) {
-				checkbox(obj);
-			}
+                var flag = !isChecked(obj);
+                (function(key, value) {
+                    chrome.runtime.getBackgroundPage(
+                        function(backgroundPage) {
+                            backgroundPage.notify(key, value);
+                        }
+                    );
+                })(obj.id, flag);
+				checkbox(obj, flag);
+			};
 		})(list[i]);
+        (function(obj) {
+            chrome.storage.sync.get(obj.id, 
+                function(items) {
+                    checkbox(obj, (items[obj.id] == "true"));
+                }
+            );
+        })(list[i]);
 	}
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-	
 });

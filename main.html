@@ -6,7 +6,7 @@
 <script src = "main.js"></script>
 <style>
 .border {
-	padding-top: 15px;
+	padding-top: 5px;
 	padding-left: 6px;
 	padding-right: 6px;
 	/*padding: 12px;*/
@@ -25,13 +25,13 @@ a.immutable_link{
 <body>
 <div class="border">
 <div class="clear_fix indented">
-<div class="checkbox fl_l" name="age">
+<div class="checkbox fl_l" id="age">
 <div></div>Show age
 </div>
 </div>
 
 <div class="clear_fix indented">
-<div class="checkbox fl_l" name="audio_download">
+<div class="checkbox fl_l" id="audio_downloader">
 <div></div>
 <span style="vertical-align: top;">
 Download audio by right-clicking on
@@ -41,19 +41,18 @@ Download audio by right-clicking on
 </div>
 
 <div class="clear_fix indented">
-<div class="checkbox fl_l" name="gate_remover">
+<div class="checkbox fl_l" id="away_gate_remover">
 <div></div>Do not block suspicious links
 </div>
 </div>
 
 <div class="clear_fix">
-<div class="checkbox fl_l" name="tex">
-<div></div>Enable \( \TeX \) via <span><a class="immutable_link">MathJax</a><input type="hidden" value="http://www.mathjax.org/"></span>
+<div class="checkbox fl_l" id="mathjax">
+<div></div>Enable \( \TeX \) via <a href="http://www.mathjax.org/" class="immutable_link">MathJax</a>
 </div>
 </div>
 <div style="display: block; float: right;">
-<a class="immutable_link" rel="author"><address>Dubov Pavel</address></a>
-<input type="hidden" value="http://vk.com/id9813536">
+<a href="http://vk.com/id9813536" class="immutable_link" rel="author"><address>Dubov Pavel</address></a>
 </div>
 </div>
 </body>
