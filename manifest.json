@@ -1,9 +1,10 @@
 {
 	"manifest_version": 2,
 	"name": "VK Extensions",
-	"version": "0.1",
+	"version": "0.1.2",
+	"description": "Приятные мелочи",
 	"permissions": [
-		"storage"
+		"storage", "tabs", "*://vk.com/*"
 	],
 	"browser_action": {
 		"default_icon": "logo.png",

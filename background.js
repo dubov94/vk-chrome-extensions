@@ -4,8 +4,18 @@ chrome.runtime.onInstalled.addListener(function(details) {
 			"age": "true", 
 			"audio_downloader": "true",
 			"away_gate_remover": "true",
-			"mathjax": "true"
+			"mathjax": "false"
 		});
+		chrome.tabs.query({url: "*://vk.com/*"},
+			function(tabs) {
+				for(var i = 0; i < tabs.length; ++i) {
+					if(tabs[i].url.match("^http.*://vk.com/away.*$") === null) {
+						chrome.tabs.executeScript(tabs[i].id, {file: "age.js", runAt: "document_end"});
+						chrome.tabs.executeScript(tabs[i].id, {file: "audio_downloader.js", runAt: "document_end"});
+					}
+				}
+			}
+		);
 	}
 });
 
