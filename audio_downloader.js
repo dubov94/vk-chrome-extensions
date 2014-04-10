@@ -15,7 +15,7 @@
 				if(classes[i] == "play_new") {
 					event.preventDefault();
 					var play_btn = event.target.parentNode.parentNode;
-					var url = play_btn.getElementsByTagName("input")[0].value.split("?")[0];
+					var url = play_btn.getElementsByTagName("input")[0].value;
 					var filename = play_btn.nextElementSibling.getElementsByClassName("title_wrap")[0].innerText + ".mp3";
 					download(url, filename);
 					break;
