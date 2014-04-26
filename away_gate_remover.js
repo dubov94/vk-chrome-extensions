@@ -1,8 +1,7 @@
 launcher(new function() {
 	this.name = "away_gate_remover";
 	this.launch = function() {
-		window.stop();
-		document.body.innerHTML = "";
+		document.body.style.display = "none";
 		var pairs = window.location.search.substring(1).split("&");
 		for(var i = 0; i < pairs.length; i++) {
 		    var splitted = pairs[i].split("=");
