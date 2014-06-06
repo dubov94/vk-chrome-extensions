@@ -56,8 +56,19 @@ launcher(new function() {
 				dest.id = "age";
 				dest.className = "label";
 				dest.style["display"] = "inline";
-				dest.innerText = " (" + 
-					calculate_age(parseInt(year), parseInt(month), parseInt(day)) + " лет)";  //hope accounts with age <= 4 y.o. are very rare
+				
+				var calc_age = calculate_age(parseInt(year), parseInt(month), parseInt(day));
+				var age_label = " лет";
+				if ( Math.floor(calc_age / 10) != 1 ) {
+					if (calc_age % 10 == 1) { age_label = " год";}
+					if (
+						(calc_age % 10 == 2)||
+						(calc_age % 10 == 3)||
+						(calc_age % 10 == 4)
+						) { age_label = " года"; }
+					}		
+				
+				dest.innerText = " (" + calc_age + age_label + ")";
 				block_int.appendChild(dest);
 			}
 		}
