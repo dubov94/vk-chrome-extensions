@@ -31,9 +31,9 @@ function toggle_control(features_list, button) {
 
 	function check_caption() {
 		if(features_on == all_features) {
-			button.innerText = "Deselect all";
+			button.innerText = "Снять отметки";
 		} else {
-			button.innerText = "Select all";
+			button.innerText = "Выбрать все";
 		}
 	}
 

@@ -57,7 +57,7 @@ launcher(new function() {
 				dest.className = "label";
 				dest.style["display"] = "inline";
 				dest.innerText = " (" + 
-					calculate_age(parseInt(year), parseInt(month), parseInt(day)) + " years)";
+					calculate_age(parseInt(year), parseInt(month), parseInt(day)) + " лет)";  //hope accounts with age <= 4 y.o. are very rare
 				block_int.appendChild(dest);
 			}
 		}
