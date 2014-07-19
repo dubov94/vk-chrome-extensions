@@ -1,11 +1,10 @@
 launcher(new function() {
 	function download(url, filename) {
-		var link = document.createElement("a");
+		/*var link = document.createElement("a");
 	    link.href = url;
 	    link.download = filename;
-	    var click = document.createEvent("MouseEvents");
-	    click.initEvent("click", true, true);
-	    link.dispatchEvent(click);
+	    link.click();*/
+	    window.open(url);
 	}
 	
 	var listener = function (event) {
@@ -15,7 +14,7 @@ launcher(new function() {
 				event.preventDefault();
 				var play_btn = event.target.parentNode.parentNode;
 				var url = play_btn.getElementsByTagName("input")[0].value;
-				var filename = play_btn.nextElementSibling.getElementsByClassName("title_wrap")[0].innerText + ".mp3";
+				var filename = play_btn.nextElementSibling.getElementsByClassName("title_wrap")[0].innerText;
 				download(url, filename);
 				break;
 			}
@@ -23,6 +22,7 @@ launcher(new function() {
 	};
 
 	this.name = "audio_downloader";
+	
 	this.launch = function() {
 		document.body.addEventListener("contextmenu", listener);
 	}
