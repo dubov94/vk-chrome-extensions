@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "VK Extensions",
-	"version": "0.2.4",
+	"version": "1.1",
 	"description": "Приятные мелочи",
 	"permissions": [
 		"storage", "*://*.vk.me/*"

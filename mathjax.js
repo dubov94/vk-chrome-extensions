@@ -9,11 +9,7 @@ launcher(new function() {
 	this.inject = function() {
 		var mathjax = document.createElement("script");  
 		mathjax.setAttribute("type", "text/javascript");
-		if(location.protocol == "https:") {
-			mathjax.setAttribute("src", "https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
-		} else {
-			mathjax.setAttribute("src", "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
-		}
+		mathjax.setAttribute("src", "//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
 		mathjax.text = ['MathJax.Hub.Register.StartupHook("End", function () { ', 
 			//'console.log("MathJax loaded");', 
 			'document.addEventListener("vk_extensions_mathjax_update", function(event) { ',
