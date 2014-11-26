@@ -1,5 +1,9 @@
 launcher(new function() {
 	function content_changed() {
+		var editor = document.getElementById("wpe_text");
+		if(editor != null) {
+			editor.classList.add("tex2jax_ignore");
+		}
 		var event = new Event("vk_extensions_mathjax_update");
 		document.dispatchEvent(event);
 	}
