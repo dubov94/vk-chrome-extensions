@@ -1,8 +1,8 @@
 launcher(new function() {
 	function content_changed() {
-		var editor = document.getElementById("wpe_text");
-		if(editor != null) {
-			editor.classList.add("tex2jax_ignore");
+		var editables = document.querySelectorAll('[contenteditable="true"]');
+		for(var editableIndex = 0; editableIndex < editables.length; ++editableIndex) {
+			editables[editableIndex].classList.add("tex2jax_ignore");
 		}
 		var event = new Event("vk_extensions_mathjax_update");
 		document.dispatchEvent(event);
