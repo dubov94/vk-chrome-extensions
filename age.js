@@ -21,15 +21,10 @@ launcher(new function() {
 		return age;
 	}
 
-	var observer = new MutationObserver(function (mutations) { start_observer("wrap3"); content_changed(); }); // VK sometimes reloads wrap3
-
-	function start_observer(id) {
-		observer.observe(document.getElementById(id), {childList : true});
-	}
+	var observer = new MutationObserver(function (mutations) { content_changed(); });
 
 	function start_observing() {
-		start_observer("page_body");
-		start_observer("wrap3");
+		observer.observe(document.getElementById("page_body"), { childList : true, subtree : true});
 	}
 
 	function end_observing() {
@@ -37,9 +32,10 @@ launcher(new function() {
 	}
 
 	function content_changed() {
-		//console.log("VK Age: updating");
+		// console.log("VK Age: updating");
 		var dest = document.getElementById("age");
 		if(dest == null) {
+			// console.log("VK Age: searching");
 			var block_ext = document.getElementById("profile_short");
 			if(block_ext != null) {
 				var block_int = block_ext.children[0].children[0].children[1];
