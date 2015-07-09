@@ -10,8 +10,11 @@ launcher(new function() {
 
                 var link = document.createElement("a");
 		 	    link.href = blobUrl;
-		 	    var filename = node.innerText;
-		 	    link.download = filename + ".mp3";
+		 	    var performer = node.childNodes[0].innerText,
+		 	    	dash = node.childNodes[1].textContent,
+		 	    	name = node.childNodes[2].innerText;
+		 	    var filename = performer + dash + name;
+		 	    link.download = filename.trim() + ".mp3";
 			    link.click();
 
                 window.URL.revokeObjectURL(blobUrl);
