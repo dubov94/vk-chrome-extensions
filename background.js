@@ -16,9 +16,9 @@ chrome.runtime.onInstalled.addListener(function(details) {
 					chrome.storage.sync.remove(key);
 				}
 			}
+			chrome.storage.sync.set(VK_EXTENSIONS_FEATURES);
 		});
-	}
-	if(details.reason == "install" || details.reason == "update") {
+	} else if(details.reason == "install") {
 		chrome.storage.sync.set(VK_EXTENSIONS_FEATURES);
 	}
 });
