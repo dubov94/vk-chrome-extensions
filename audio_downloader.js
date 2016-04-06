@@ -1,60 +1,78 @@
 launcher(new function() {
-	function download(url, node) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.responseType = "blob";
+    function download(url, node) {
+        let xhr = new XMLHttpRequest()
+        xhr.open("GET", url, true)
+        xhr.responseType = "blob"
+
+        /* deprecated: access this data via data-* attributes */
+        let performer = node.childNodes[0].innerText,
+            separator = node.childNodes[1].textContent,
+            name = node.childNodes[2].innerText
 
         xhr.onload = function(event) {            
-                var blob = new Blob([xhr.response], { type: "audio/mp3" });
-                blobUrl = window.URL.createObjectURL(blob);
+                let blob = new Blob([xhr.response], { type: "audio/mp3" })
+                blobUrl = window.URL.createObjectURL(blob)
 
-                var link = document.createElement("a");
-		 	    link.href = blobUrl;
-		 	    var performer = node.childNodes[0].innerText,
-		 	    	dash = node.childNodes[1].textContent,
-		 	    	name = node.childNodes[2].innerText;
-		 	    var filename = performer + dash + name;
-		 	    link.download = filename.trim() + ".mp3";
-			    link.click();
+                let link = document.createElement("a")
+                link.href = blobUrl
+                let filename
+                if(VK_REDESIGNED()) {
+                    filename = `${performer} ${separator} ${name}`
+                } else {
+                    filename = `${performer}${separator}${name}`
+                }
+                link.download = `${filename.trim()}.mp3`
+                link.click()
 
-                window.URL.revokeObjectURL(blobUrl);
-        };
+                window.URL.revokeObjectURL(blobUrl)
+        }
 
-        var separator = node.childNodes[1].textContent;
         xhr.onprogress = function(event) {
-        	var progressInfo;
-        	if(event.loaded == event.total) {
-        		progressInfo = separator;
-        	} else {
-        		progressInfo = separator + Math.round(event.loaded / event.total * 100) + "%" + separator;
-        	}
-        	node.childNodes[1].textContent = progressInfo;
-        };
+            let progressInfo
+            if(event.loaded == event.total) {
+                progressInfo = separator
+            } else {
+                let percentage = Math.round(event.loaded / event.total * 100)
+                if(VK_REDESIGNED()) {
+                    progressInfo = `${separator} ${percentage}% ${separator}`
+                } else {
+                    progressInfo = `${separator}${percentage}%${separator}`
+                }
+            }
+            node.childNodes[1].textContent = progressInfo
+        }
 
-        xhr.send(); 
-	}
-	
-	var listener = function (event) {
-		var classes = event.target.classList;
-		for(var i = 0; i < classes.length; ++i) {
-			if(classes[i] == "play_new") {
-				event.preventDefault();
-				var play_btn = event.target.parentNode.parentNode;
-				var url = play_btn.getElementsByTagName("input")[0].value;
-				var node = play_btn.nextElementSibling.getElementsByClassName("title_wrap")[0];
-				download(url, node);
-				break;
-			}
-		}
-	};
+        xhr.send() 
+    }
+    
+    let listener = function (event) {
+        let url, node
+        if(!VK_REDESIGNED()) {
+            if(event.target.classList.contains("play_new")) {
+                event.preventDefault()
+                let play_btn = event.target.parentNode.parentNode
+                url = play_btn.querySelector("input").value
+                node = play_btn.nextElementSibling.querySelector(".title_wrap")
+                download(url, node)
+            }
+        } else {
+            if(event.target.classList.contains("audio_play")) {
+                event.preventDefault()
+                let audio_block = event.target.parentNode.parentNode
+                url = audio_block.getAttribute("data-url")
+                node = audio_block.querySelector(".audio_title_wrap")
+                download(url, node)
+            }
+        }
+    }
 
-	this.name = "audio_downloader";
-	
-	this.launch = function() {
-		document.body.addEventListener("contextmenu", listener);
-	}
+    this.name = "audio_downloader"
+    
+    this.launch = function() {
+        document.body.addEventListener("contextmenu", listener)
+    }
 
-	this.finish = function() {
-		document.body.removeEventListener("contextmenu", listener);
-	}
-});
+    this.finish = function() {
+        document.body.removeEventListener("contextmenu", listener)
+    }
+})

@@ -1,35 +1,35 @@
 {
-	"manifest_version": 2,
-	"name": "VK Extensions",
-	"version": "1.2",
-	"description": "Приятные мелочи",
-	"permissions": [
-		"storage", "*://*.vk.me/*", "*://*.vk-cdn.net/*"
-	],
-	"browser_action": {
-		"default_icon": "logo_128.png",
-		"default_popup": "main.html"
-	},
+    "manifest_version": 2,
+    "name": "VK Extensions",
+    "version": "2.0",
+    "description": "Приятные мелочи",
+    "permissions": [
+        "storage", "*://*.vk.me/*", "*://*.vk-cdn.net/*"
+    ],
+    "browser_action": {
+        "default_icon": "logo_128.png",
+        "default_popup": "main.html"
+    },
     "icons": { 
         "48": "logo_48.png",
         "128": "logo_128.png" 
     },
-	"content_scripts" : [ {
+    "content_scripts" : [ {
         "js" : [ "manager.js" ],
-        "matches" : ["*://vk.com/*"],
+        "matches" : ["*://vk.com/*", "*://new.vk.com/*"],
         "run_at" : "document_start"
     }, {
         "js" : [ "away_gate_remover.js" ],
-        "matches" : ["*://vk.com/away.*"],
+        "matches" : ["*://vk.com/away.*", "*://new.vk.com/away.*"],
         "run_at" : "document_start"
     }, {
         "js" : [ "age.js", "audio_downloader.js", "audio_bitrate.js", "mathjax.js" ],
-        "matches" : ["*://vk.com/*"],
-        "exclude_matches" : ["*://vk.com/away.*"],
+        "matches" : ["*://vk.com/*", "*://new.vk.com/*"],
+        "exclude_matches" : ["*://vk.com/away.*", "*://new.vk.com/away.*"],
         "run_at" : "document_end"
     } ],
     "background": {
-    	"scripts": ["background.js"],
-    	"persistent": false
+        "scripts": ["background.js"],
+        "persistent": false
     }
 }

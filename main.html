@@ -2,69 +2,77 @@
 <head>
 <meta charset="utf-8">
 <title>VK Extensions</title>
-<link rel="stylesheet" type="text/css" href="http://st0.vk.me/css/al/common.css">
-<script src = "main.js"></script>
+<link rel="stylesheet" type="text/css" href="https://new.vk.com/css/al/common.css">
+<link rel="stylesheet" type="text/css" href="https://new.vk.com/css/al/settings.css">
+<script src="main.js"></script>
 <style>
-.border {
-	padding-top: 5px;
-	padding-left: 6px;
-	padding-right: 6px;
-	/*padding: 12px;*/
-	/*border: 3px solid #4E729A;*/
-	/*border-radius: 25px;*/
-	width: 214px;
+body {
+    -webkit-user-select: none;
+    background-color: white;
+    width: 303px;
 }
-.indented {
-	padding-bottom: 6px;
+
+#toggle_all {
+    width: 100px;
 }
-a.immutable_link{
-  color:blue;
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.settings_narrow_row {
+    position: relative;
+}
+
+.audio_play {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 </style>
 </head>
-<body style="-webkit-user-select: none;">
-<div class="border">
-<div class="clear_fix indented">
-<div class="checkbox fl_l" id="age">
-<div></div>Show age
-</div>
-</div>
+<body>
+<div class="settings_panel">
+<div class="settings_line">
+    <div class="settings_narrow_row">
+        <div class="checkbox" id="age">
+            Show age
+        </div>
+    </div>
 
-<div class="clear_fix indented">
-<div class="checkbox fl_l" id="audio_downloader">
-<div></div>
-<span style="vertical-align: top;">
-Download audio by right-clicking on
-</span>
-<span style="display: inline-block; width: 16px; height: 16px; background: url(http://st0.vk.me/images/playpause.gif) no-repeat; margin-top: -1px"></span>
-</div>
-</div>
+    <div class="settings_narrow_row">
+        <div class="checkbox" id="audio_downloader">
+            Download audio by right-clicking on
+            <div class="audio_play"></div>
+        </div>
+    </div>
 
-<div class="clear_fix indented">
-<div class="checkbox fl_l" id="audio_bitrate">
-<div></div>Show audio bitrate (<a href="http://en.wikipedia.org/wiki/Kb/s" class="immutable_link">kb/s</a>) under
-<span class="audio">
-<span class="duration" style="padding: 0px 0px 0px 0px;">4:33</span>
-</span>
-</div>
-</div>
+    <div class="settings_narrow_row">
+        <div class="checkbox" id="audio_bitrate">
+            Show audio bitrate (<a href="http://en.wikipedia.org/wiki/Kb/s" class="immutable_link">kb/s</a>) under
+            <span style="color: #939699;">4:33</span>
+        </div>
+    </div>
 
-<div class="clear_fix indented">
-<div class="checkbox fl_l" id="away_gate_remover">
-<div></div>Do not block suspicious links
-</div>
-</div>
+    <div class="settings_narrow_row">
+        <div class="checkbox" id="away_gate_remover">
+            Do not block suspicious links
+        </div>
+    </div>
 
-<div class="clear_fix indented">
-<div class="checkbox fl_l" id="mathjax">
-<div></div>Enable \( \TeX \) via <a href="http://www.mathjax.org/" class="immutable_link">MathJax</a>
-</div>
-</div>
-<div class="button_blue indented" style="padding-left: 18px;">
-<button id="toggle_all" style="padding-top: 4px; padding-bottom: 4px; width: 100px;">Select all</button>
-</div>
-<div style="display: block; float: right; padding-top: 5px; padding-right: 8px;">
-<a href="http://vk.com/id9813536" class="immutable_link" rel="author"><address>Dubov Pavel</address></a>
+    <div class="settings_narrow_row">
+        <div class="checkbox" id="mathjax">
+            Enable \( \TeX \) via <a href="http://www.mathjax.org/" class="immutable_link">MathJax</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <button class="flat_button" id="toggle_all">Select all</button>
+        <a href="http://vk.com/id9813536" class="immutable_link" rel="author"><address>Pavel Dubov</address></a>
+    </div>
 </div>
 </div>
 </body>
