@@ -35,7 +35,7 @@ function globalObserver(F, timeout) {
 function VK_REDESIGNED() {
     let style =  document.querySelector('link[href^="/css/al/common.css"]')
     let version = parseInt(style.href.split('?')[1])
-    return version >= 2652081421
+    return version > 513
 }
 
 function launcher(extension) { //name, launch, finish, inject
