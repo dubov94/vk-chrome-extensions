@@ -1,3 +1,5 @@
+'use strict';
+
 function globalObserver(F, timeout) {
     function smartTimeout(fn, interval) {
         let running = false

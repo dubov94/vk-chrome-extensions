@@ -1,3 +1,5 @@
+'use strict';
+
 document.addEventListener("DOMContentLoaded", function () {
     let list = document.querySelectorAll(".immutable_link")
     for(let i = 0; i < list.length; ++i) {

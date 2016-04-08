@@ -1,3 +1,5 @@
+'use strict';
+
 launcher(new function() {
     function get_value(string, key) {
         let i = string.indexOf(key + "=")
@@ -12,10 +14,10 @@ launcher(new function() {
 
     function calculate_age(year, month, day) {
         let today = new Date()
-        todayYear = today.getFullYear()
-        todayMonth = today.getMonth()
-        todayDay = today.getDate()
-        age = todayYear - year 
+        let todayYear = today.getFullYear(),
+            todayMonth = today.getMonth(),
+            todayDay = today.getDate()
+        let age = todayYear - year 
         if (todayMonth < month - 1) age--
         if (todayMonth == month - 1 && todayDay < day) age--
         return age
@@ -47,11 +49,11 @@ launcher(new function() {
                 if(block_int.childElementCount != 2 ||
                     block_int.children[0].tagName != "A" || 
                     block_int.children[1].tagName != "A") return
-                let dateBlock = block_int.children[0].href
-                let yearBlock = block_int.children[1].href
-                let day = get_value(dateBlock, "c[bday]")
-                let month = get_value(dateBlock, "c[bmonth]")
-                let year = get_value(yearBlock, "c[byear]")
+                let dateBlock = block_int.children[0].href,
+                    yearBlock = block_int.children[1].href
+                let day = get_value(dateBlock, "c[bday]"),
+                    month = get_value(dateBlock, "c[bmonth]"),
+                    year = get_value(yearBlock, "c[byear]")
                 if(day == null || month == null || year == null) return
                 dest = document.createElement("span")
                 dest.id = ageBlockId

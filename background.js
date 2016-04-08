@@ -1,3 +1,5 @@
+'use strict';
+
 let VK_EXTENSIONS_FEATURES = {
     "age": "true", 
     "audio_downloader": "true",

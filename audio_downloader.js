@@ -1,3 +1,5 @@
+'use strict';
+
 launcher(new function() {
     function download(url, node) {
         let xhr = new XMLHttpRequest()
@@ -11,7 +13,7 @@ launcher(new function() {
 
         xhr.onload = function(event) {            
                 let blob = new Blob([xhr.response], { type: "audio/mp3" })
-                blobUrl = window.URL.createObjectURL(blob)
+                let blobUrl = window.URL.createObjectURL(blob)
 
                 let link = document.createElement("a")
                 link.href = blobUrl

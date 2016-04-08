@@ -1,3 +1,5 @@
+'use strict';
+
 launcher(new function() { 
         function insertCSS() {
             let css = document.createElement("style")
@@ -23,8 +25,9 @@ launcher(new function() {
             } else {
                 css.innerHTML =
                     `.vk_extensions_duration { 
-                        margin-top: -4px; 
+                        margin-top: -5px; 
                     }
+
                     .vk_extensions_bitrate { 
                         font-size: 0.7em; 
                         line-height: calc(1em + 1px); 

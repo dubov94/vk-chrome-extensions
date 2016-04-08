@@ -1,3 +1,5 @@
+'use strict';
+
 launcher(new function() {
     this.name = "away_gate_remover"
     this.launch = function() {

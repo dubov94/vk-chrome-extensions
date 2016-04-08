@@ -1,3 +1,5 @@
+'use strict';
+
 launcher(new function() {
     function content_changed() {
         let editables = document.querySelectorAll('[contenteditable="true"]')
