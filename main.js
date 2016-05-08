@@ -1,7 +1,7 @@
 'use strict';
 
-document.addEventListener("DOMContentLoaded", function () {
-    let list = document.querySelectorAll(".immutable_link")
+document.addEventListener('DOMContentLoaded', function () {
+    let list = document.querySelectorAll('.immutable_link')
     for(let i = 0; i < list.length; ++i) {
         list[i].onclick = (function(address) {
             return function(event) {
@@ -24,7 +24,7 @@ function toggle_control(features_list, button) {
             }
         } else {
             for(let i = 0; i < all_features; ++i) {
-                if(!features_list[i].classList.contains("on")) {
+                if(!features_list[i].classList.contains('on')) {
                     features_list[i].onclick()
                 }
             }
@@ -33,9 +33,9 @@ function toggle_control(features_list, button) {
 
     function check_caption() {
         if(features_on == all_features) {
-            button.innerText = "Deselect all"
+            button.innerText = 'Deselect all'
         } else {
-            button.innerText = "Select all"
+            button.innerText = 'Select all'
         }
     }
 
@@ -51,29 +51,29 @@ function toggle_control(features_list, button) {
 
 let toggle_button_control
 
-document.addEventListener("DOMContentLoaded", function() {
-    let list = document.querySelectorAll(".checkbox")
-    toggle_button_control = new toggle_control(list, document.querySelector("#toggle_all"))
+document.addEventListener('DOMContentLoaded', function() {
+    let list = document.querySelectorAll('.checkbox')
+    toggle_button_control = new toggle_control(list, document.querySelector('#toggle_all'))
     for(let i = 0; i < list.length; ++i) {
         list[i].onclick = (function(obj) {
             return function(event) {
-                let flag = !obj.classList.contains("on")
+                let flag = !obj.classList.contains('on')
                 ;(function(key, value) {
                     chrome.runtime.getBackgroundPage(
                         function(backgroundPage) {
-                            backgroundPage.notify(key, value)
+                            backgroundPage.notifyFeature(key, value)
                         }
                     )
                 })(obj.id, flag)
-                obj.classList.toggle("on", flag)
+                obj.classList.toggle('on', flag)
                 toggle_button_control.toggler(flag)
             }
         })(list[i])
         ;(function(obj) {
             chrome.storage.sync.get(obj.id, 
                 function(items) {
-                    if(items[obj.id] == "true") {
-                        obj.classList.toggle("on", true)
+                    if(items[obj.id] === true) {
+                        obj.classList.toggle('on', true)
                         toggle_button_control.toggler(true)
                     }
                 }

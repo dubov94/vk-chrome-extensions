@@ -1,10 +1,10 @@
 'use strict';
 
-launcher(new function() { 
+addFeature(new function() { 
         function insertCSS() {
-            let css = document.createElement("style")
-            css.type = "text/css"
-            if(!VK_REDESIGNED()) {
+            let css = document.createElement('style')
+            css.type = 'text/css'
+            if(!vkRedesigned()) {
                 css.innerHTML = 
                     `.vk_extensions_duration { 
                         padding-top: 0px !important; 
@@ -25,7 +25,10 @@ launcher(new function() {
             } else {
                 css.innerHTML =
                     `.vk_extensions_duration { 
-                        margin-top: -5px; 
+                        margin-top: -4px; 
+                    }
+                    .audio_row_current.inlined .vk_extensions_duration {
+                        margin-top: -7px;
                     }
 
                     .vk_extensions_bitrate { 
@@ -40,106 +43,111 @@ launcher(new function() {
             document.head.appendChild(css)
         }
 
-        let content_changed, undo;
+        let contentChanged, undo;
 
-        if(!VK_REDESIGNED()) {
+        if(!vkRedesigned()) {
             let update = function(obj) {
-                let bitrate = document.createElement("div")
-                bitrate.style = "display: none"
+                let bitrate = document.createElement('div')
+                bitrate.style = 'display: none'
                 obj.parentNode.appendChild(bitrate)
-                bitrate.className = "vk_extensions_bitrate duration fl_r"
-                let url = obj.parentNode.parentNode.querySelector("input").value
-                let dur = parseInt(url.substring(url.lastIndexOf(",") + 1))
+                bitrate.className = 'vk_extensions_bitrate duration fl_r'
+                let url = obj.parentNode.parentNode.querySelector('input').value
+                let dur = parseInt(url.substring(url.lastIndexOf(',') + 1))
                 let xhr = new XMLHttpRequest()
-                xhr.open("HEAD", url, true)
+                xhr.open('HEAD', url, true)
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState == 4 && xhr.status == 200) {
-                        bitrate.innerText = Math.round(parseInt(xhr.getResponseHeader("Content-Length")) * 8 / dur / 1000)
-                        obj.classList.add("vk_extensions_duration")
-                        bitrate.style = ""
+                        bitrate.innerText = Math.round(Number(xhr.getResponseHeader('Content-Length')) * 8 / dur / 1000)
+                        obj.classList.add('vk_extensions_duration')
+                        bitrate.style = ''
                     }
                 }
                 xhr.send()
             }
 
-            let is_audio_info_block = function(obj, count) {
-                return obj.childElementCount == count && obj.children[0].classList.contains("title_wrap")
+            let isAudioInfoBlock = function(obj, count) {
+                return obj.childElementCount == count && obj.children[0].classList.contains('title_wrap')
             }
 
-            content_changed = function() {
-                let blocks = document.querySelectorAll(".info")
+            contentChanged = function() {
+                let blocks = document.querySelectorAll('.info')
                 for(let i = 0; i < blocks.length; ++i) {
-                    if(is_audio_info_block(blocks[i], 3)) {
+                    if(isAudioInfoBlock(blocks[i], 3)) {
                         update(blocks[i].children[2])
                     }
                 }
             }
 
             undo = function() {
-                let blocks = document.querySelectorAll(".info")
+                let blocks = document.querySelectorAll('.info')
                 for(let i = 0; i < blocks.length; ++i) {
-                    if(is_audio_info_block(blocks[i], 4)) {
+                    if(isAudioInfoBlock(blocks[i], 4)) {
                         blocks[i].removeChild(blocks[i].children[3])
-                        blocks[i].children[2].classList.remove("vk_extensions_duration")
+                        blocks[i].children[2].classList.remove('vk_extensions_duration')
                     }
                 }
             }
         } else {
-            let add_bitrate = function(wrap) {
-                let bitrate = document.createElement("div")
-                bitrate.style = "display: none"
-                wrap.appendChild(bitrate)
-                bitrate.className = "vk_extensions_bitrate"
-                let audio = wrap.parentNode.parentNode
-                let url = audio.getAttribute("data-url")
-                let dur = parseInt(audio.getAttribute("data-duration"))
-                let xhr = new XMLHttpRequest()
-                xhr.open("HEAD", url, true)
-                xhr.onreadystatechange = function() {
-                    if(xhr.readyState == 4 && xhr.status == 200) {
-                        bitrate.innerText = Math.round(parseInt(xhr.getResponseHeader("Content-Length")) * 8 / dur / 1000)
-                        wrap.firstElementChild.classList.add("vk_extensions_duration")
-                        bitrate.style = ""
-                    }
-                }
-                xhr.send()
-            }
+            window.addEventListener('message', function(event) {
+                if(event.data.type === 'vkExtensionsAudioBitrate') {
+                    let audio = event.data.audio
+                    let audioBlock = document.querySelector('#audio_' + audio.fullId)
+                    let durationWrapper = audioBlock.querySelector('.audio_duration_wrap')
 
-            content_changed = function() {
-                let blocks = document.querySelectorAll(".audio_duration_wrap")
-                for(let i = 0; i < blocks.length; ++i) {
-                    /* check whether audio block is not processed yet */
-                    if(blocks[i].childElementCount == 2) {
-                        add_bitrate(blocks[i])
+                    let xhr = new XMLHttpRequest()
+                    xhr.open('HEAD', audio.url, true)
+                    xhr.onreadystatechange = function() {
+                        if(this.readyState == this.DONE && this.status == 200) {
+                            let bitrate = Math.round(Number(this.getResponseHeader('Content-Length')) * 8 / audio.duration / 1000)
+                            let bitrateBlock = document.createElement('div')
+                            bitrateBlock.classList.add('vk_extensions_bitrate')
+                            bitrateBlock.innerText = bitrate
+                            durationWrapper.firstElementChild.classList.add('vk_extensions_duration')
+                            durationWrapper.appendChild(bitrateBlock)
+                        }
                     }
+                    xhr.send()
+                }
+            })
+
+            contentChanged = function() {
+                let blocksNotProcessed = document.querySelectorAll('.audio_row:not(.vk_extensions_audio)')
+                if(blocksNotProcessed.length > 0) {
+                    let idsNotProcessed = []
+                    for(let i = 0; i < blocksNotProcessed.length; ++i) {
+                        idsNotProcessed.push(blocksNotProcessed[i].getAttribute('data-full-id'))
+                        blocksNotProcessed[i].classList.add('vk_extensions_audio')
+                    }
+                    getAudioData(idsNotProcessed, 'vkExtensionsAudioBitrate')
                 }
             }
 
             undo = function() {
-                let blocks = document.querySelectorAll(".audio_duration_wrap")
-                for(let i = 0; i < blocks.length; ++i) {
-                    if(blocks[i].childElementCount == 3) {
-                        blocks[i].removeChild(blocks[i].lastElementChild)
-                        blocks[i].firstElementChild.classList.remove("vk_extensions_duration")
-                    }
+                let blocksProcessed = document.querySelectorAll('.vk_extensions_audio')
+                for(let i = 0; i < blocksProcessed.length; ++i) {
+                    let audioBlock = blocksProcessed[i]
+                    let durationWrapper = audioBlock.querySelector('.audio_duration_wrap')
+                    durationWrapper.removeChild(durationWrapper.lastElementChild)
+                    durationWrapper.firstElementChild.classList.remove('vk_extensions_duration')
+                    audioBlock.classList.remove('vk_extensions_audio')
                 }
             }
         }
 
-        let observer = new globalObserver(content_changed, 100)
+        let observer = new globalObserver(contentChanged, 100)
 
-        this.name = "audio_bitrate"
-        this.launch = function() {
-            content_changed()
+        this.name = 'audio_bitrate'
+        this.start = function() {
+            contentChanged()
             observer.start()
         }
 
         this.inject = function() {
             insertCSS()
-            this.launch()
+            this.start()
         }
 
-        this.finish = function () {
+        this.stop = function() {
             observer.stop()
             undo()
         }

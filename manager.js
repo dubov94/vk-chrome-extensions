@@ -34,40 +34,79 @@ function globalObserver(F, timeout) {
     }
 }
 
-function VK_REDESIGNED() {
-    let style =  document.querySelector('link[href^="/css/al/common.css"]')
+function vkRedesigned() {
+    let style =  document.querySelector(`link[href^='/css/al/common.css']`)
     let version = parseInt(style.href.split('?')[1])
     return version > 513
 }
 
-function launcher(extension) { //name, launch, finish, inject
-    let __launch
-    if(extension.hasOwnProperty("inject")) {
+function executePageContextFunction(fn, argumentsList) {
+    let script = document.createElement('script')
+    let code = '(' + fn + ').apply(null, ' + JSON.stringify(argumentsList) + ');'
+    script.textContent = code
+    script.onload = function() {
+        this.parentNode.removeChild(this)
+    }
+    document.head.appendChild(script)
+}
+
+let getAudioDataInPageContext = function(ids, messageType) {
+    const step = 10
+    for(let i = 0; i < ids.length; i += step) {
+        ajax.post('al_audio.php', {
+            act: 'reload_audio',
+            ids: ids.slice(i, i + step).join(',')
+        }, {
+            onDone: function(data) {
+                if(data) {
+                    data.forEach(function(datum) {
+                        window.postMessage({
+                            type: messageType,
+                            audio: AudioUtils.asObject(datum)
+                        }, '*')
+                    })
+                } else {
+                    topMsg('<b>VK Extensions</b>: unable to retrieve audio data because of <br>too many requests. Please, try again in a minute.')
+                }
+            }
+        })
+    }
+}
+
+let getAudioData = function(ids, messageType) {
+    /* todo: caching */
+    executePageContextFunction(getAudioDataInPageContext, [ids, messageType])
+}
+
+function addFeature(feature) { /* name, start, stop, inject */
+    let launchingFunction
+    if(feature.hasOwnProperty('inject')) {
         let injected = false
-        __launch = function() {
+        launchingFunction = function() {
             if(injected) {
-                extension.launch()
+                feature.start()
             } else {
-                extension.inject()
+                feature.inject()
                 injected = true
             }
         }
     } else {
-        __launch = extension.launch
+        launchingFunction = feature.start
     }
-    chrome.storage.sync.get(extension.name, function(items) {
-        if(items[extension.name] == "true") {
-            __launch()
+    chrome.storage.sync.get(feature.name, function(items) {
+        if(items[feature.name] === true) {
+            launchingFunction()
         }
 
-        if(extension.hasOwnProperty("finish")) {
+        if(feature.hasOwnProperty('stop')) {
             chrome.runtime.onMessage.addListener(
                 function(request, sender, sendResponse) {
-                    if(extension.name in request) {
-                        if(request[extension.name] == "true") {
-                            __launch()
+                    /* check if request contains feature */
+                    if(feature.name in request) {
+                        if(request[feature.name] === true) {
+                            launchingFunction()
                         } else {
-                            extension.finish()
+                            feature.stop()
                         }
                     }
                 }

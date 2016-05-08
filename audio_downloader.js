@@ -1,10 +1,10 @@
 'use strict';
 
-launcher(new function() {
+addFeature(new function() {
     function download(url, node) {
         let xhr = new XMLHttpRequest()
-        xhr.open("GET", url, true)
-        xhr.responseType = "blob"
+        xhr.open('GET', url, true)
+        xhr.responseType = 'blob'
 
         /* deprecated: access this data via data-* attributes */
         let performer = node.childNodes[0].innerText,
@@ -12,21 +12,21 @@ launcher(new function() {
             name = node.childNodes[2].innerText
 
         xhr.onload = function(event) {            
-                let blob = new Blob([xhr.response], { type: "audio/mp3" })
-                let blobUrl = window.URL.createObjectURL(blob)
+                let blob = new Blob([xhr.response], { type: 'audio/mp3' })
+                let blobURL = window.URL.createObjectURL(blob)
 
-                let link = document.createElement("a")
-                link.href = blobUrl
-                let filename
-                if(VK_REDESIGNED()) {
-                    filename = `${performer} ${separator} ${name}`
+                let link = document.createElement('a')
+                link.href = blobURL
+                let fileName
+                if(vkRedesigned()) {
+                    fileName = `${performer} ${separator} ${name}`
                 } else {
-                    filename = `${performer}${separator}${name}`
+                    fileName = `${performer}${separator}${name}`
                 }
-                link.download = `${filename.trim()}.mp3`
+                link.download = `${fileName.trim()}.mp3`
                 link.click()
 
-                window.URL.revokeObjectURL(blobUrl)
+                window.URL.revokeObjectURL(blobURL)
         }
 
         xhr.onprogress = function(event) {
@@ -35,7 +35,7 @@ launcher(new function() {
                 progressInfo = separator
             } else {
                 let percentage = Math.round(event.loaded / event.total * 100)
-                if(VK_REDESIGNED()) {
+                if(vkRedesigned()) {
                     progressInfo = `${separator} ${percentage}% ${separator}`
                 } else {
                     progressInfo = `${separator}${percentage}%${separator}`
@@ -47,34 +47,41 @@ launcher(new function() {
         xhr.send() 
     }
     
-    let listener = function (event) {
+    let contextMenuListener = function(event) {
         let url, node
-        if(!VK_REDESIGNED()) {
-            if(event.target.classList.contains("play_new")) {
+        if(!vkRedesigned()) {
+            if(event.target.classList.contains('play_new')) {
                 event.preventDefault()
-                let play_btn = event.target.parentNode.parentNode
-                url = play_btn.querySelector("input").value
-                node = play_btn.nextElementSibling.querySelector(".title_wrap")
+                let playBtn = event.target.parentNode.parentNode
+                url = playBtn.querySelector('input').value
+                node = playBtn.nextElementSibling.querySelector('.title_wrap')
                 download(url, node)
             }
         } else {
-            if(event.target.classList.contains("audio_play")) {
+            if(event.target.classList.contains('audio_play')) {
                 event.preventDefault()
-                let audio_block = event.target.parentNode.parentNode
-                url = audio_block.getAttribute("data-url")
-                node = audio_block.querySelector(".audio_title_wrap")
-                download(url, node)
+                let audioBlock = event.target.parentNode.parentNode
+                getAudioData([audioBlock.getAttribute('data-full-id')], 'vkExtensionsAudioDownloader')
             }
         }
     }
 
-    this.name = "audio_downloader"
+    window.addEventListener('message', function(event) {
+        if(event.data.type === 'vkExtensionsAudioDownloader') {
+            let audio = event.data.audio
+            let audioBlock = document.querySelector('#audio_' + audio.fullId)
+            let node = audioBlock.querySelector('.audio_title_wrap')
+            download(audio.url, node)
+        }
+    })
+
+    this.name = 'audio_downloader'
     
-    this.launch = function() {
-        document.body.addEventListener("contextmenu", listener)
+    this.start = function() {
+        document.body.addEventListener('contextmenu', contextMenuListener)
     }
 
-    this.finish = function() {
-        document.body.removeEventListener("contextmenu", listener)
+    this.stop = function() {
+        document.body.removeEventListener('contextmenu', contextMenuListener)
     }
 })
