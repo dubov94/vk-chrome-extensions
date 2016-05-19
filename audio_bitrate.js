@@ -24,8 +24,11 @@ addFeature(new function() {
                     }`
             } else {
                 css.innerHTML =
-                    `.vk_extensions_duration { 
-                        margin-top: -4px; 
+                    `.vk_extensions_duration {
+                        display: block !important;
+                    }
+                    .vk_extensions_duration { 
+                        margin-top: -4px;
                     }
                     .audio_row_current.inlined .vk_extensions_duration {
                         margin-top: -7px;
@@ -102,7 +105,7 @@ addFeature(new function() {
                             let bitrateBlock = document.createElement('div')
                             bitrateBlock.classList.add('vk_extensions_bitrate')
                             bitrateBlock.innerText = bitrate
-                            durationWrapper.firstElementChild.classList.add('vk_extensions_duration')
+                            durationWrapper.children[1].classList.add('vk_extensions_duration')
                             durationWrapper.appendChild(bitrateBlock)
                         }
                     }
