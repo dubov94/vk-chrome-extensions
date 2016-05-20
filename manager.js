@@ -37,7 +37,7 @@ function globalObserver(F, timeout) {
 function vkRedesigned() {
     let style =  document.querySelector(`link[href^='/css/al/common.css']`)
     let version = parseInt(style.href.split('?')[1])
-    return version > 513
+    return version > 1024
 }
 
 function executePageContextFunction(fn, argumentsList) {
