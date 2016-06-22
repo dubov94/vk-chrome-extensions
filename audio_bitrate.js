@@ -1,26 +1,26 @@
 'use strict';
 
-addFeature(new function() { 
+addFeature(new function() {
         function insertCSS() {
             let css = document.createElement('style')
             css.type = 'text/css'
             if(!vkRedesigned()) {
-                css.innerHTML = 
-                    `.vk_extensions_duration { 
-                        padding-top: 0px !important; 
-                        padding-bottom: 0px !important; 
-                        position: absolute; 
-                        right: 0px; 
-                        bottom: 14px; 
+                css.innerHTML =
+                    `.vk_extensions_duration {
+                        padding-top: 0px !important;
+                        padding-bottom: 0px !important;
+                        position: absolute;
+                        right: 0px;
+                        bottom: 14px;
                     }
-                    .vk_extensions_bitrate { 
-                        clear: right; 
-                        font-size: 0.7em !important; 
-                        padding-top: 1px !important; 
-                        padding-bottom: 0px !important; 
-                        position: absolute; 
-                        right: 0px; 
-                        bottom: 3px; 
+                    .vk_extensions_bitrate {
+                        clear: right;
+                        font-size: 0.7em !important;
+                        padding-top: 1px !important;
+                        padding-bottom: 0px !important;
+                        position: absolute;
+                        right: 0px;
+                        bottom: 3px;
                     }`
             } else {
                 css.innerHTML =
@@ -29,9 +29,9 @@ addFeature(new function() {
                         margin-top: -8px;
                     }
 
-                    .vk_extensions_audio .audio_duration + div { 
-                        font-size: 0.8em;  
-                        text-align: right; 
+                    .vk_extensions_audio .audio_duration + div {
+                        font-size: 0.8em;
+                        text-align: right;
                     }
 
                     .vk_extensions_audio:not(.inlined) .audio_hq_label + div {
@@ -42,6 +42,9 @@ addFeature(new function() {
                         display: inline-block !important;
                     }
                     .vk_extensions_audio:hover .audio_hq_label + div {
+                        display: none !important;
+                    }
+                    .audio_row.audio_deleted .audio_hq_label + div {
                         display: none !important;
                     }`
             }
