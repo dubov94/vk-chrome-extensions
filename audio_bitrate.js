@@ -51,7 +51,7 @@ addFeature(new function() {
             document.head.appendChild(css)
         }
 
-        let contentChanged, undo;
+        let contentChanged, undo
 
         if(!vkRedesigned()) {
             let update = function(obj) {
@@ -154,7 +154,7 @@ addFeature(new function() {
             }
         }
 
-        let observer = new globalObserver(contentChanged, 100)
+        let observer = new globalObserver(contentChanged, 1000)
 
         this.name = 'audio_bitrate'
         this.start = function() {

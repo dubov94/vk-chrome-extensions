@@ -35,7 +35,7 @@ function globalObserver(F, timeout) {
 }
 
 function vkRedesigned() {
-    let style =  document.querySelector(`link[href^='/css/al/common.css']`)
+    let style =  document.querySelector(`link[href*='/al/common.css']`)
     let version = parseInt(style.href.split('?')[1])
     return version > 1024
 }
@@ -66,7 +66,7 @@ let getAudioDataInPageContext = function(ids, messageType) {
                         }, '*')
                     })
                 } else {
-                    topMsg('<b>VK Extensions</b>: unable to retrieve audio data because of <br>too many requests. Please, try again in a minute.')
+                    topMsg('<b>VK Extensions</b>: unable to retrieve some of audio data <br>because of too many requests or a broken track.', 5)
                 }
             }
         })
